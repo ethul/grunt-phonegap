@@ -159,6 +159,9 @@
           case 'android':
             this.buildAndroidIcons(this.config.icons);
             break;
+          case 'ios':
+            this.buildIosIcons(this.config.name, this.config.icons);
+            break;
           default:
             this.warn("You have set `phonegap.config.icons`, but " + platform + " does not support it. Skipped...");
         }
@@ -203,6 +206,27 @@
           encoding: null
         });
       }
+    };
+
+    Build.prototype.buildIosIcons = function(name, icons) {
+      var dest, enc, hi, small, standard;
+      dest = this.path.join(this.config.path, 'platforms', 'ios', name, 'Resources', 'icons');
+      enc = null;
+      hi = '@2x';
+      small = '29';
+      standard = '57';
+      return [small, '40', '50', standard, '60', '72', '76'].filter((function(a) {
+        return icons[a] && this.file.exists(icons[a]) && this.file.exists(icons[a + hi]);
+      }), this).forEach(function(a) {
+        var names;
+        names = a === small ? ["icon-small.png", "icon-small" + hi + ".png"] : a === standard ? ["icon.png", "icon" + hi + ".png"] : ["icon-" + a + ".png", "icon-" + (a + hi) + ".png"];
+        this.file.copy(icons[a], this.path.join(dest, names[0]), {
+          encoding: enc
+        });
+        return this.file.copy(icons[a + hi], this.path.join(dest, names[1]), {
+          encoding: enc
+        });
+      }, this);
     };
 
     Build.prototype._setVerbosity = function() {
