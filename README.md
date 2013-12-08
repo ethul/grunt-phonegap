@@ -86,7 +86,7 @@ grunt.initConfig({
       },
 
       // Set an app icon at various sizes (optional)
-      icon: {
+      icons: {
         ldpi: 'icon-36-ldpi.png',
         mdpi: 'icon-48-mdpi.png',
         hdpi: 'icon-72-hdpi.png',

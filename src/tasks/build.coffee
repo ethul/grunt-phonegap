@@ -81,6 +81,8 @@ class module.exports.Build
       switch platform
         when 'android'
           @buildAndroidIcons(@config.icons)
+        when 'ios'
+          @buildIosIcons(@config.name, @config.icons)
         else
           @warn "You have set `phonegap.config.icons`, but #{platform} does not support it. Skipped..."
     else
@@ -109,6 +111,23 @@ class module.exports.Build
 
     if best
       @file.copy best, @path.join(res, 'drawable', 'icon.png'), encoding: null
+
+  buildIosIcons: (name, icons) ->
+    dest = @path.join @config.path, 'platforms', 'ios', name, 'Resources', 'icons'
+    enc = null
+    hi = '@2x'
+    small = '29'
+    standard = '57'
+    [small, '40', '50', standard, '60', '72', '76'].
+      filter(((a) -> icons[a] && @file.exists(icons[a]) && @file.exists(icons[a + hi])), this).
+      forEach((a) ->
+        names =
+          if a is small then ["icon-small.png", "icon-small#{hi}.png"]
+          else if a is standard then ["icon.png", "icon#{hi}.png"]
+          else ["icon-#{a}.png", "icon-#{a + hi}.png"]
+        @file.copy icons[a], @path.join(dest, names[0]), encoding: enc
+        @file.copy icons[a + hi], @path.join(dest, names[1]), encoding: enc
+      , this)
 
   _setVerbosity: ->
     if @config.verbose then '-V' else ''
