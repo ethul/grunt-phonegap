@@ -39,10 +39,10 @@ module.exports = (grunt) ->
       build.cloneCordova,
       build.compileConfig
     ], ->
-      async.eachSeries config.plugins, build.addPlugin, (err) ->
-        async.eachSeries config.platforms, build.buildPlatform, (err) ->
-          async.eachSeries config.platforms, build.postProcessPlatform, ->
-            async.eachSeries config.platforms, build.buildIcons, (err) ->
+      async.eachSeries config.platforms, build.buildIcons, (err) ->
+        async.eachSeries config.plugins, build.addPlugin, (err) ->
+          async.eachSeries config.platforms, build.buildPlatform, (err) ->
+            async.eachSeries config.platforms, build.postProcessPlatform, ->
               done()
 
   grunt.registerTask 'phonegap:run', 'Run a Phonegap application', ->
