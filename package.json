@@ -51,7 +51,7 @@
     "cordova"
   ],
   "dependencies": {
-    "directory-copy": "0.0.4",
+    "directory-copy": "ethul/node-directory-copy#84346225cd7834d9e637da9f94ac63109e80c1ea",
     "async": "~0.2.9",
     "cp": "~0.1.1",
     "xmldom": "~0.1.16"
