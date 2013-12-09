@@ -41,10 +41,10 @@
       done = this.async();
       build = new Build(grunt, config).clean().buildTree();
       return async.series([build.cloneRoot, build.cloneCordova, build.compileConfig], function() {
-        return async.eachSeries(config.plugins, build.addPlugin, function(err) {
-          return async.eachSeries(config.platforms, build.buildPlatform, function(err) {
-            return async.eachSeries(config.platforms, build.postProcessPlatform, function() {
-              return async.eachSeries(config.platforms, build.buildIcons, function(err) {
+        return async.eachSeries(config.platforms, build.buildIcons, function(err) {
+          return async.eachSeries(config.plugins, build.addPlugin, function(err) {
+            return async.eachSeries(config.platforms, build.buildPlatform, function(err) {
+              return async.eachSeries(config.platforms, build.postProcessPlatform, function() {
                 return done();
               });
             });
